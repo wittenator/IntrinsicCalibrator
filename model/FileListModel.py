@@ -1,13 +1,14 @@
 import sys
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
-from PyQt6.QtCore import Qt
+from PyQt6 import QtCore
+from PyQt6.QtCore import Qt, QModelIndex
 from pydantic import BaseModel
 
 import numpy as np
 
 class Image(BaseModel):
     file_path: str
-    detected_corners: np.ndarray | None = None
+    board_detections: list | None = None
+    selected: bool = True
 
     class Config:
         arbitrary_types_allowed = True
@@ -18,11 +19,11 @@ class FileListModel(QtCore.QAbstractListModel):
         self.images: list[Image] = [Image(file_path=path) for path in image_paths]
 
     def data(self, index: int, role) -> str:
+        item: Image = self.images[index.row()]
         if role == Qt.ItemDataRole.DisplayRole:
-            # See below for the data structure.
-            item: Image = self.images[index.row()]
-            # Return the todo text only.
             return item.file_path
+        elif role == Qt.ItemDataRole.CheckStateRole:
+            return item.selected
 
     def rowCount(self, index):
         return len(self.images)
@@ -30,3 +31,6 @@ class FileListModel(QtCore.QAbstractListModel):
     def addImage(self, file_path: str):
         self.images.append(Image(file_path=file_path))
         self.layoutChanged.emit()
+    
+    def flags(self, index: QModelIndex) -> Qt.ItemFlag:
+        return super().flags(index) | Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsSelectable

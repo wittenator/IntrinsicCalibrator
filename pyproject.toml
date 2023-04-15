@@ -12,7 +12,7 @@ pyqtgraph = "^0.13.2"
 pyopengl = "^3.1.6"
 pydantic = "^1.10.7"
 qt-material = "^2.14"
-opencv-python = "^4.7.0.72"
+opencv-contrib-python = "^4.7.0.72"
 
 
 [build-system]

@@ -1,17 +1,17 @@
-from PyQt6.QtWidgets import QListView, QWidget, QGridLayout
+from PyQt6.QtWidgets import QListView, QWidget, QGridLayout, QSizePolicy
 from model.FileListModel import FileListModel
 
 import pyqtgraph as pg
 import cv2
 
 class RecordTab(QWidget):
-    def __init__(self):
+    def __init__(self, model):
         QWidget.__init__(self)
         layout = QGridLayout()
         self.setLayout(layout)
 
         # create a list view from FileListModel
-        self.model = FileListModel()
+        self.model = model
         view = QListView()
         view.setModel(self.model)
         view.selectionModel().selectionChanged.connect(
@@ -19,18 +19,17 @@ class RecordTab(QWidget):
         )
         layout.addWidget(view, 0, 0)
 
+        # set resize policy for the list view
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding , QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(6)
+        sizePolicy.setHeightForWidth(view.sizePolicy().hasHeightForWidth())
+        view.setSizePolicy(sizePolicy)
+
         # create image view
         self.imv = pg.ImageView()
         self.imv.show()
-        layout.addWidget(self.imv, 0, 1)
-
-    def addFiles(self, paths: list[str]):
-        """
-        Add an item to our todo list, getting the text from the QLineEdit .todoEdit
-        and then clearing it.
-        """
-        for path in paths:
-            self.model.addImage(file_path=path)
+        layout.addWidget(self.imv, 0, 1)        
 
     def handle_selection_changed(self, selected, deselected):
         """
