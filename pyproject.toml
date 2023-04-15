@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "intrinsiccalibratorinterface"
+version = "0.1.0"
+description = ""
+authors = ["Tim Korjakow <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyqt6 = "^6.5.0"
+pyqtgraph = "^0.13.2"
+pyopengl = "^3.1.6"
+pydantic = "^1.10.7"
+qt-material = "^2.14"
+opencv-python = "^4.7.0.72"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
