@@ -55,7 +55,7 @@ class Window(QMainWindow):
             self,
             "Open File",
             "${HOME}",
-            "JPG Files (*.jpg);; PNG Files (*.png)",
+            "PNG Files (*.png) ;; JPG Files (*.jpg) ;; All Files (*)",
         )
         paths = fname[0]
         for path in paths:
